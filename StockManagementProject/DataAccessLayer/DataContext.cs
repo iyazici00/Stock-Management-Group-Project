@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace StockManagementProject.DataAccessLayer
@@ -19,6 +20,20 @@ namespace StockManagementProject.DataAccessLayer
         public DbSet<Warehouse> Warehouse { get; set; }
         public DbSet<WarehouseProductStock> WarehouseProductStock { get; set; }
         public DbSet<Shipment> Shipment { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Shipment>()
+                        .HasRequired(m => m.ShipperWarehouse)
+                        .WithMany(t => t.ShipperShipment)
+                        .HasForeignKey(m => m.ShipperWarehouseId)
+                        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Shipment>()
+                        .HasRequired(m => m.ReceiverWarehouse)
+                        .WithMany(t => t.ReceiverShipment)
+                        .HasForeignKey(m => m.ReceiverWarehouseId)
+                        .WillCascadeOnDelete(false);
+        }
 
     }
 }
