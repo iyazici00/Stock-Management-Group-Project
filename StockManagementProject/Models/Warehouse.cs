@@ -13,7 +13,6 @@ namespace StockManagementProject.Models
         public int ManagerId { get; set; }
         public User User { get; set; }
         public List<WarehouseProductStock> WarehouseProductStock { get; set; }
-        public List<Shipment> ReceiverShipment { get; set; }
-        public List<Shipment> ShipperShipment { get; set; }
+        public List<Shipment> Shipment { get; set; }
     }
 }
