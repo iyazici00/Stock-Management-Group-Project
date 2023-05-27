@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StockManagementProject.Controllers
@@ -23,7 +24,11 @@ namespace StockManagementProject.Controllers
 
         public void Delete()
         {
+            GetAll();
+            Console.WriteLine();
+            Console.WriteLine("------------");
             Console.Write("Silinecek Rol Id Giriniz: ");
+
             int id = Convert.ToInt32(Console.ReadLine());
             var sorgu = (from user in userRepository.GetAll()
                          where user.RoleId == id
@@ -33,23 +38,30 @@ namespace StockManagementProject.Controllers
                          }).ToList();
             if (id > 1 && sorgu.Count==0)
             {
+                Console.Clear();
                 Console.WriteLine(repository.Delete(id) ?
                     "Silme İşlemi Başarılı" :
                     "Silme İşlemi Başarısız");
+                Thread.Sleep(2500);
             }
             else
             {
+                Console.Clear();
+
                 Console.WriteLine("Silme İşlemi Başarısız");
                 Console.WriteLine("Silmeye Çalıştığınız Role Sahip Kullanıcılar Bulunuyor Olabilir");
+                Thread.Sleep(3000);
+
             }
         }
 
         public Role Get()
         {
-            Console.Clear();
+            Console.WriteLine();
             Console.Write("Detaylar İçin Rol Id: ");
             int id = Convert.ToInt32(Console.ReadLine());
             Role rol = repository.GetById(id);
+            Console.Clear();
             if (rol != null)
             {
                 Console.WriteLine("Rol Detayları");
@@ -67,6 +79,7 @@ namespace StockManagementProject.Controllers
 
         public void GetAll()
         {
+            Console.Clear();
             Console.WriteLine("Rol Listesi");
             if(repository.GetAll().Count>0)
             {
@@ -82,6 +95,9 @@ namespace StockManagementProject.Controllers
             {
                 Console.WriteLine("Rol Listesi Boş");
             }
+            Console.WriteLine("--------------");
+            Console.WriteLine();
+            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
             Console.ReadKey();
         }
 
@@ -99,19 +115,32 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("4. Rol Sil");
                 Console.WriteLine("0. Üst Menü");
                 Console.Write("Seçiminiz: ");
-                short select=Convert.ToInt16(Console.ReadLine().Substring(0,1));
-
-
-                switch (select)
+                //short select=Convert.ToInt16(Console.ReadLine().Substring(0,1));
+                string select= Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(select) && int.TryParse(select, out int numberSelect)==true)
                 {
-                    case 1: Add(); break;
-                    case 2: GetAll(); break;
-                    case 3: Update(); break;
-                    case 4: Delete(); break;
-                    case 0: return;
-                    default:
-                        break;
+                    switch (numberSelect)
+                    {
+                        case 1: Add(); break;
+                        case 2: GetAll(); break;
+                        case 3: Update(); break;
+                        case 4: Delete(); break;
+                        case 0: return;
+                        default: Console.WriteLine("Yanlış Giriş Gerçekleştirdiniz Lütfen Tekrar Deneyiniz"); break;
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Yanlış Giriş Gerçekleştirdiniz Lütfen Tekrar Deneyiniz");
+                    Console.WriteLine();
+                }
+
+
+
+
+
+
+
             }
         }
 
@@ -129,11 +158,12 @@ namespace StockManagementProject.Controllers
 
         public void Update()
         {
-            Console.Clear();
             GetAll();
             Console.WriteLine( "--------------");
             Console.WriteLine();
             Role rol = Get();
+            Console.WriteLine();
+            Console.WriteLine("---------------");
             if (rol != null)
             {
                 Role setRol = SetValue();

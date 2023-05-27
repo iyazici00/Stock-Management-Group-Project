@@ -60,10 +60,11 @@ namespace StockManagementProject
                     }
                     else if(userRole == "Sevkiyatçı")
                     {
-                        Console.WriteLine("1. Kullanıcı Bilgilerini Güncelle");
-                        Console.WriteLine("2. Deponun Bilgilerini Görüntüle");
-                        Console.WriteLine("3. Sevkiyat yap");
-                        Console.WriteLine("4. Mevcut Depoya Yapılmış Sevkiyatları Görüntüle");
+                        Console.WriteLine("1. Kullanıcı Bilgilerini Görüntüle");
+                        Console.WriteLine("2. Kullanıcı Bilgilerini Güncelle");
+                        Console.WriteLine("3. Deponun Bilgilerini Görüntüle");
+                        Console.WriteLine("4. Sevkiyat yap");
+                        Console.WriteLine("5. Mevcut Depoya Yapılmış Sevkiyatları Görüntüle");
                         rolec = 's';
                     }
                     Console.WriteLine("0. Çıkış");
@@ -73,15 +74,18 @@ namespace StockManagementProject
                     string guide = select+rolec;
                     switch (guide)
                     {
+                        //Admin panel girdileri
                         case "1a": roleController.Menu(); break;
                         case "2a": userController.Menu(); break;
                         case "3a": warehouseController.Menu(); break;
                         case "4a": categoryController.Menu(); break;
                         case "5a": productController.Menu(); break;
-                        case "1s": userController.Update(userId); break;
-                        case "2s": warehouseController.Get(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
-                        case "3s":  break; //shipment !!
-                        case "4s": break; //shipment
+                        //Sevkiyat panel girdileri
+                        case "1s": userController.Getvoid(userId); break;
+                        case "2s": userController.Update(userId); break;
+                        case "3s": warehouseController.Get(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
+                        case "4s":  break; //shipment !!
+                        case "5s": break; //shipment
                         default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500); break;
                     }
                 }

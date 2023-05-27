@@ -170,9 +170,8 @@ namespace StockManagementProject.Controllers
 
                 string managerid = Console.ReadLine();
 
-                if (!string.IsNullOrWhiteSpace(managerid) && int.TryParse(managerid, out int sayi))
+                if (!string.IsNullOrWhiteSpace(managerid) && int.TryParse(managerid, out int managerIdInt))
                 {
-                    int managerIdInt = Convert.ToInt32(managerid);
                     User managerisIsNull = db.User.FirstOrDefault(x => x.Id == managerIdInt);
 
                     if (managerisIsNull != null)

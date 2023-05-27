@@ -25,16 +25,25 @@ namespace StockManagementProject.Controllers
             string password = Console.ReadLine();
 
             user=repository.GetByLogin(email, password);
-            var sorgu = (from role in roleRepository.GetAll()
-                         where user.RoleId == role.Id
-                         select new
-                         {
-                             rolAd=role.Name
-                         }).FirstOrDefault();
-            if (user != null && sorgu.rolAd !=null)
+
+            if (user != null)
             {
-                userId = user.Id;
-                userRole = sorgu.rolAd;
+                var sorgu = (from role in roleRepository.GetAll()
+                             where user.RoleId == role.Id
+                             select new
+                             {
+                                 rolAd = role.Name
+                             }).FirstOrDefault();
+                if (sorgu.rolAd != null)
+                {
+                    userId = user.Id;
+                    userRole = sorgu.rolAd;
+                }
+                else
+                {
+                    userId = 0;
+                    userRole = "Hata";
+                }
             }
             else
             {
@@ -79,15 +88,15 @@ namespace StockManagementProject.Controllers
         
         public User Get(int id)
         {
+            Console.Clear();
             User user = repository.GetById(id);
             if (user != null)
             {
                 Console.WriteLine("Kullanıcı Detayları");
                 Console.WriteLine("-------------");
-                Console.WriteLine("Id       : " + user.Id);
-                Console.WriteLine("Ad       : " + user.Name);
-                Console.WriteLine("Soyad       : " + user.Surname);
-                Console.WriteLine("Soyad       : " + user.Email);
+                Console.WriteLine("Ad    : " + user.Name);
+                Console.WriteLine("Soyad : " + user.Surname);
+                Console.WriteLine("Email : " + user.Email);
                 //role
             }
             else
@@ -95,6 +104,25 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Kullanıcı Bulunamadı");
             }
             return user;
+        }
+        public void Getvoid(int id)
+        {
+            Console.Clear();
+
+            User user = repository.GetById(id);
+            if (user != null)
+            {
+                Console.WriteLine("Kullanıcı Detayları");
+                Console.WriteLine("-------------");
+                Console.WriteLine("Ad    : " + user.Name);
+                Console.WriteLine("Soyad : " + user.Surname);
+                Console.WriteLine("Email : " + user.Email);
+                //role
+            }
+            else
+            {
+                Console.WriteLine("Kullanıcı Bulunamadı");
+            }
         }
 
         public void GetAll()
@@ -187,6 +215,8 @@ namespace StockManagementProject.Controllers
         public void Update(int id)
         {
             User user = Get(id);
+            Console.WriteLine();
+            Console.WriteLine("-----------------");
             if (user != null)
             {
                 User setUser = SetValue();
