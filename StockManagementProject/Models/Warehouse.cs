@@ -12,7 +12,7 @@ namespace StockManagementProject.Models
         public string District { get; set; }
         public int ManagerId { get; set; }
         public User User { get; set; }
-        public List<WarehouseProductStock> WarehouseProductStock { get; set; } 
+        public List<WarehouseProductStock> WarehouseProductStock { get; set; }
         public List<Shipment> ReceiverShipment { get; set; }
         public List<Shipment> ShipperShipment { get; set; }
     }
