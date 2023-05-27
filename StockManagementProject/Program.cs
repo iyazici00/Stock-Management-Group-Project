@@ -71,7 +71,7 @@ namespace StockManagementProject
                     Console.Write("Seçim: ");
                     string select= Console.ReadLine().Substring(0,1);
                     string guide = select+rolec;
-                    switch (select)
+                    switch (guide)
                     {
                         case "1a": roleController.Menu(); break;
                         case "2a": userController.Menu(); break;
