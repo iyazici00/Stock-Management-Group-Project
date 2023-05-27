@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StockManagementProject.Controllers
@@ -15,19 +16,16 @@ namespace StockManagementProject.Controllers
 
         public void Add()
         {
-            if (repository.Add(SetValue()))
-            {
-                Console.WriteLine("Ekleme Başarılı");
-            }
-            else
-            {
-                Console.WriteLine("Ekleme Başarısız");
-            }
+            Console.Clear();
+            Console.WriteLine(repository.Add(SetValue()) ? "Ekleme Başarılı" : "Ekleme Başarısız");
+            Thread.Sleep(2000);
 
         }
 
         public void Delete()
         {
+            GetAll();
+
             Console.Write("Silinecek Ürün Id Giriniz: ");
             int id = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine(repository.Delete(id) ? "Silme İşlemi Başarılı" : " Silme İşlemi Başarısız");
@@ -37,8 +35,11 @@ namespace StockManagementProject.Controllers
         CategoryRepository repositoryCategory = new CategoryRepository();
         public Product Get()
         {
+            GetAll();
+
             Console.Write("Detayını Görmek İstediğiniz Ürün Id: ");
             int id = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
             Product product = repository.GetById(id);
 
             Category category = repositoryCategory.GetById(product.CategoryId);
@@ -83,13 +84,14 @@ namespace StockManagementProject.Controllers
             bool status = true;
             while (status)
             {
+                Console.Clear();
+
                 Console.WriteLine("  İşlem Seçiniz   ");
                 Console.WriteLine("------------------");
                 Console.WriteLine("Ürün Ekle     (1)");
-                Console.WriteLine("Ürün Detayı   (2)");
-                Console.WriteLine("Ürün Sil      (3)");
-                Console.WriteLine("Ürün Güncelle (4)");
-                Console.WriteLine("Ürün Listesi  (5)");
+                Console.WriteLine("Ürün Sil      (2)");
+                Console.WriteLine("Ürün Güncelle (3)");
+                Console.WriteLine("Ürün Listesi  (4)");
                 Console.WriteLine("Üst Menü      (0)");
                 Console.Write("Seçiminiz: ");
                 int select = Convert.ToInt32(Console.ReadLine());
@@ -100,16 +102,15 @@ namespace StockManagementProject.Controllers
                         Add();
                         break;
                     case 2:
-                        Get();
-                        break;
-                    case 3:
                         Delete();
                         break;
-                    case 4:
+                    case 3:
                         Update();
                         break;
-                    case 5:
+                    case 4:
                         GetAll();
+                        CheckForContinue();
+
                         break;
                     case 0:
 
@@ -119,8 +120,7 @@ namespace StockManagementProject.Controllers
                         Console.WriteLine("Tanımsız işlem Tekrar Deneyiniz");
                         break;
                 }
-                Console.WriteLine("Devam Etmek İçin Bir Tuşa Basınız");
-                Console.ReadKey();
+
             }
         }
         public Product SetValue()
@@ -136,8 +136,10 @@ namespace StockManagementProject.Controllers
 
         public void Update()
         {
+            Console.Clear ();
             Product product = Get();
-
+            Console.WriteLine();
+            Console.WriteLine("-------------");
             if (product != null)
             {
                 Product setProduct = SetValue();
@@ -148,6 +150,14 @@ namespace StockManagementProject.Controllers
                     repository.Update(product);
                 }
             }
+        }
+
+        public void CheckForContinue()
+        {
+            Console.WriteLine("-------------------");
+            Console.WriteLine();
+            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
+            Console.ReadKey();
         }
     }
 }

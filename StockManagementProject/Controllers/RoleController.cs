@@ -17,9 +17,12 @@ namespace StockManagementProject.Controllers
         UserRepository userRepository=new UserRepository();
         public void Add()
         {
+            Console.Clear();
             Console.WriteLine(repository.Add(SetValue()) ?
                                 "Ekleme Başarılı" :
                                 "Ekleme Başarısız");
+            Thread.Sleep(2000);
+
         }
 
         public void Delete()

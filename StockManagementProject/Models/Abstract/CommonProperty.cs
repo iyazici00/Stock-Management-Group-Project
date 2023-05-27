@@ -12,6 +12,6 @@ namespace StockManagementProject.Models.Abstract
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsStatus { get; set; }
+        public bool IsStatus { get; set; }=true;
     }
 }

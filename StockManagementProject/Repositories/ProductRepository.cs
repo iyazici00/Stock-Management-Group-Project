@@ -19,8 +19,8 @@ namespace StockManagementProject.Repositories
             if (entity != null)
             {
                 db.Product.Add(entity);
-                whstrepo.Add(entity);
                 db.SaveChanges();
+                whstrepo.Add(entity);
 
                 result = true;
 
@@ -35,8 +35,8 @@ namespace StockManagementProject.Repositories
             if (product != null)
             {
                 db.Product.Remove(product);
-                whstrepo.Delete(product);
                 db.SaveChanges();
+                whstrepo.Delete(product);
                 result = true;
 
             }

@@ -21,8 +21,8 @@ namespace StockManagementProject.Repositories
             if (entity != null)
             {
                 db.Warehouse.Add(entity); //depo ekliyor
-                whstrepo.Add(entity); // Eklenen depo için WarehouseProductStocks tablosuna tüm ürünlerden 0 adet ekliyor  
                 db.SaveChanges();
+                whstrepo.Add(entity); // Eklenen depo için WarehouseProductStocks tablosuna tüm ürünlerden 0 adet ekliyor  
                 result = true;
             }
             return result;
@@ -35,8 +35,8 @@ namespace StockManagementProject.Repositories
             if (warehouse != null)
             {
                 db.Warehouse.Remove(warehouse);
-                whstrepo.Delete(warehouse);
                 db.SaveChanges();
+                whstrepo.Delete(warehouse);
                 result = true;
             }
             return result;

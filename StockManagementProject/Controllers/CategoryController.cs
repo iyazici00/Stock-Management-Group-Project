@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StockManagementProject.Controllers
@@ -17,11 +18,15 @@ namespace StockManagementProject.Controllers
 
         public void Add()
         {
+            Console.Clear();
             Console.WriteLine(repository.Add(SetValue()) ? "Ekleme Başarılı" : "Ekleme Başarısız");
+            Thread.Sleep(2000);
+
         }
 
         public void Delete()
         {
+            GetAll();
 
             Console.Write("Silinecek Kategori Id Giriniz: ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -40,9 +45,13 @@ namespace StockManagementProject.Controllers
 
         public Category Get()
         {
+            GetAll();
+            Console.WriteLine("--------------");
+            Console.WriteLine();
             Console.Write("Detayını Görmek İstediğiniz Kategori Id: ");
             int id = Convert.ToInt32(Console.ReadLine());
             Category category = repository.GetById(id);
+            Console.Clear();
             if (category != null)
             {
                 Console.WriteLine("Kategori Detay");
@@ -63,8 +72,10 @@ namespace StockManagementProject.Controllers
                 foreach (var product in sorgu)
                 {
                     i++;
-                    Console.WriteLine(i + product.productNames);
+                    Console.WriteLine(i +". "+ product.productNames);
                 }
+
+
             }
             else
             {
@@ -90,6 +101,7 @@ namespace StockManagementProject.Controllers
             {
                 Console.WriteLine("Kategori Listesi Boş");
             }
+
         }
 
         public void Menu()
@@ -97,6 +109,8 @@ namespace StockManagementProject.Controllers
             bool status = true;
             while (status)
             {
+                Console.Clear();
+
                 Console.WriteLine("    İşlem Seçiniz    ");
                 Console.WriteLine("---------------------");
                 Console.WriteLine("Kategori Ekle     (1)");
@@ -115,6 +129,7 @@ namespace StockManagementProject.Controllers
                         break;
                     case 2:
                         Get();
+                        CheckForContinue();
                         break;
                     case 3:
                         Delete();
@@ -124,6 +139,7 @@ namespace StockManagementProject.Controllers
                         break;
                     case 5:
                         GetAll();
+                        CheckForContinue();
                         break;
                     case 0:
                         status = !status;
@@ -144,13 +160,14 @@ namespace StockManagementProject.Controllers
 
             Console.Write("Kategori İsmi: ");
             category.Name = Console.ReadLine();
-            Console.WriteLine("Kategori Durumu Aktif(A) Pasif(P):");
+            Console.Write("Kategori Durumu Aktif(A) Pasif(P): ");
             category.IsStatus = Console.ReadLine().Substring(0, 1).ToLower() == "a" ? true : false;
             return category;
         }
 
         public void Update()
         {
+
             Category category = Get();
 
             if (category != null)
@@ -163,6 +180,14 @@ namespace StockManagementProject.Controllers
                     repository.Update(category);
                 }
             }
+        }
+
+        public void CheckForContinue()
+        {
+            Console.WriteLine("-------------------");
+            Console.WriteLine();
+            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
+            Console.ReadKey();
         }
     }
 }

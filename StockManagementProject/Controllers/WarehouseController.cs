@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StockManagementProject.Controllers
@@ -19,8 +20,9 @@ namespace StockManagementProject.Controllers
 
         public void Add()
         {
+            Console.Clear();
             Console.WriteLine(repository.Add(SetValue()) ? "Ekleme Başarılı" : "Ekleme Başarısız");
-            
+            Thread.Sleep(2000);
 
         }
 
@@ -83,6 +85,7 @@ namespace StockManagementProject.Controllers
             return warehouse;
         }
 
+
         public void GetAll()
         {
             Console.WriteLine("Depoların Listesi");
@@ -119,6 +122,8 @@ namespace StockManagementProject.Controllers
             bool status = true;
             while (status)
             {
+                Console.Clear();
+
                 Console.WriteLine("Depo İşlemi Seçiniz");
                 Console.WriteLine("-------------------");
                 Console.WriteLine("Depo Ekle       (1)");
@@ -142,11 +147,8 @@ namespace StockManagementProject.Controllers
                     case 0: status = !status; break;
                     default: Console.WriteLine("Tanımsız İşlem Tekrar Deneyiniz"); break;
                 }
-
-                Console.WriteLine("Devam Etmek İçin Bir Tuşa Basınız");
-
-                Console.Clear();
             }
+
         }
 
         public Warehouse SetValue()

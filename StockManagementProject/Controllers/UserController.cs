@@ -98,6 +98,7 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Soyad : " + user.Surname);
                 Console.WriteLine("Email : " + user.Email);
                 //role
+
             }
             else
             {
@@ -118,6 +119,8 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Soyad : " + user.Surname);
                 Console.WriteLine("Email : " + user.Email);
                 //role
+                Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
+                Console.ReadKey();
             }
             else
             {
