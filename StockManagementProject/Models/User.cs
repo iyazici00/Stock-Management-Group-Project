@@ -14,7 +14,7 @@ namespace StockManagementProject.Models
         public string Password { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        public Warehouse Warehouse { get; set; }
+        public List<Warehouse> Warehouse { get; set; }
         public List<Shipment> Shipment { get; set; }
 
     }
