@@ -46,6 +46,7 @@ namespace StockManagementProject.Controllers
 
         public Role Get()
         {
+            Console.Clear();
             Console.Write("Detaylar İçin Rol Id: ");
             int id = Convert.ToInt32(Console.ReadLine());
             Role rol = repository.GetById(id);
@@ -81,7 +82,7 @@ namespace StockManagementProject.Controllers
             {
                 Console.WriteLine("Rol Listesi Boş");
             }
-
+            Console.ReadKey();
         }
 
         public void Menu()
@@ -128,7 +129,10 @@ namespace StockManagementProject.Controllers
 
         public void Update()
         {
+            Console.Clear();
             GetAll();
+            Console.WriteLine( "--------------");
+            Console.WriteLine();
             Role rol = Get();
             if (rol != null)
             {

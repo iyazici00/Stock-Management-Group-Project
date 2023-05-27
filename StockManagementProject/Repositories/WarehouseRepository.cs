@@ -14,15 +14,14 @@ namespace StockManagementProject.Repositories
     internal class WarehouseRepository : IRepository<Warehouse>
     {
         DataContext db = new DataContext();
-        WarehouseProductStockController warehouseProductStockController = new WarehouseProductStockController();
-
+        WarehouseProductStockRepository whstrepo = new WarehouseProductStockRepository();
         public bool Add(Warehouse entity) // her depo eklendiği zaman warehouseproductstocka göndereceğiz
         {
             bool result = false;
             if (entity != null)
             {
                 db.Warehouse.Add(entity); //depo ekliyor
-                warehouseProductStockController.Add(entity); // Eklenen depo için WarehouseProductStocks tablosuna tüm ürünlerden 0 adet ekliyor  
+                whstrepo.Add(entity); // Eklenen depo için WarehouseProductStocks tablosuna tüm ürünlerden 0 adet ekliyor  
                 db.SaveChanges();
                 result = true;
             }
@@ -36,6 +35,7 @@ namespace StockManagementProject.Repositories
             if (warehouse != null)
             {
                 db.Warehouse.Remove(warehouse);
+                whstrepo.Delete(warehouse);
                 db.SaveChanges();
                 result = true;
             }

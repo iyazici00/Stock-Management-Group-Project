@@ -12,13 +12,16 @@ namespace StockManagementProject.Repositories
     internal class ProductRepository : IRepository<Product>
     {
         DataContext db = new DataContext();
+        WarehouseProductStockRepository whstrepo = new WarehouseProductStockRepository();
         public bool Add(Product entity)
         {
             bool result = false;
             if (entity != null)
             {
                 db.Product.Add(entity);
+                whstrepo.Add(entity);
                 db.SaveChanges();
+
                 result = true;
 
             }
@@ -32,6 +35,7 @@ namespace StockManagementProject.Repositories
             if (product != null)
             {
                 db.Product.Remove(product);
+                whstrepo.Delete(product);
                 db.SaveChanges();
                 result = true;
 

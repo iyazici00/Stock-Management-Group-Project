@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class createdatabase : DbMigration
+    public partial class CreateDatabase : DbMigration
     {
         public override void Up()
         {
@@ -62,11 +62,10 @@
                         ManagerId = c.Int(nullable: false),
                         Name = c.String(),
                         IsStatus = c.Boolean(nullable: false),
-                        User_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.User_Id)
-                .Index(t => t.User_Id);
+                .ForeignKey("dbo.Users", t => t.ManagerId, cascadeDelete: true)
+                .Index(t => t.ManagerId);
             
             CreateTable(
                 "dbo.Users",
@@ -117,7 +116,7 @@
             DropForeignKey("dbo.Shipments", "ReceiverWarehouseId", "dbo.Warehouses");
             DropForeignKey("dbo.WarehouseProductStocks", "WarehouseId", "dbo.Warehouses");
             DropForeignKey("dbo.WarehouseProductStocks", "ProductId", "dbo.Products");
-            DropForeignKey("dbo.Warehouses", "User_Id", "dbo.Users");
+            DropForeignKey("dbo.Warehouses", "ManagerId", "dbo.Users");
             DropForeignKey("dbo.Shipments", "User_Id", "dbo.Users");
             DropForeignKey("dbo.Users", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.Shipments", "ProductId", "dbo.Products");
@@ -125,7 +124,7 @@
             DropIndex("dbo.WarehouseProductStocks", new[] { "ProductId" });
             DropIndex("dbo.WarehouseProductStocks", new[] { "WarehouseId" });
             DropIndex("dbo.Users", new[] { "RoleId" });
-            DropIndex("dbo.Warehouses", new[] { "User_Id" });
+            DropIndex("dbo.Warehouses", new[] { "ManagerId" });
             DropIndex("dbo.Shipments", new[] { "User_Id" });
             DropIndex("dbo.Shipments", new[] { "ProductId" });
             DropIndex("dbo.Shipments", new[] { "ShipperWarehouseId" });
