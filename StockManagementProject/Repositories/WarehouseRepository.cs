@@ -1,38 +1,75 @@
-﻿using StockManagementProject.Interfaces;
+﻿using StockManagementProject.Controllers;
+using StockManagementProject.DataAccessLayer;
+using StockManagementProject.Interfaces;
 using StockManagementProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace StockManagementProject.Repositories
 {
     internal class WarehouseRepository : IRepository<Warehouse>
     {
-        public bool Add(Warehouse entity)
+        DataContext db = new DataContext();
+        WarehouseProductStockController warehouseProductStockController = new WarehouseProductStockController();
+
+        public bool Add(Warehouse entity) // her depo eklendiği zaman warehouseproductstocka göndereceğiz
         {
-            throw new NotImplementedException();
+            bool result = false;
+            if (entity != null)
+            {
+                db.Warehouse.Add(entity); //depo ekliyor
+                warehouseProductStockController.Add(entity); // Eklenen depo için WarehouseProductStocks tablosuna tüm ürünlerden 0 adet ekliyor  
+                db.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            Warehouse warehouse = db.Warehouse.Find(id);
+            bool result = false;
+            if (warehouse != null)
+            {
+                db.Warehouse.Remove(warehouse);
+                db.SaveChanges();
+                result = true;
+            }
+            return result;
         }
 
         public List<Warehouse> GetAll()
         {
-            throw new NotImplementedException();
+            List<Warehouse> warehouses = db.Warehouse.ToList();
+            return warehouses;
         }
 
         public Warehouse GetById(int id)
         {
-            throw new NotImplementedException();
+            Warehouse warehouse = db.Warehouse.FirstOrDefault(x => x.Id == id );
+            return warehouse;
         }
 
         public bool Update(Warehouse entity)
         {
-            throw new NotImplementedException();
+            Warehouse warehouse = db.Warehouse.FirstOrDefault(x=>x.Id == entity.Id); ;
+            bool result = false;
+
+            if (warehouse != null)
+            {
+                warehouse.Name = String.IsNullOrWhiteSpace(entity.Name)?warehouse.Name : entity.Name;
+                warehouse.District = String.IsNullOrWhiteSpace(entity.District) ? warehouse.District : entity.District; ;
+                warehouse.ManagerId = (entity.ManagerId>0) ? entity.ManagerId  : warehouse.ManagerId;
+                warehouse.IsStatus = entity.IsStatus;
+
+                db.SaveChanges();
+                result = true;
+            }
+            return result;
         }
     }
 }
