@@ -1,4 +1,5 @@
-﻿using StockManagementProject.Interfaces;
+﻿using StockManagementProject.DataAccessLayer;
+using StockManagementProject.Interfaces;
 using StockManagementProject.Models;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,59 @@ namespace StockManagementProject.Repositories
 {
     internal class CategoryRepository : IRepository<Category>
     {
+        DataContext db = new DataContext();
         public bool Add(Category entity)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            if (entity != null)
+            {
+                db.Category.Add(entity);
+                db.SaveChanges();
+                result = true;
+
+            }
+            return result;
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            Category category = db.Category.Find(id);
+            bool result = false;
+            if (category != null)
+            {
+                db.Category.Remove(category);
+                db.SaveChanges();
+                result = true;
+
+            }
+            return result;
+
+
         }
 
         public List<Category> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Category.ToList();
         }
 
         public Category GetById(int id)
         {
-            throw new NotImplementedException();
+            return db.Category.FirstOrDefault(x => x.Id == id);
         }
 
         public bool Update(Category entity)
         {
-            throw new NotImplementedException();
+            var category = db.Category.FirstOrDefault(p => p.Id == entity.Id);
+            bool result = false;
+            if (category != null)
+            {
+                category.Name = String.IsNullOrWhiteSpace(entity.Name) ? category.Name : entity.Name; //boş yada boşluğa bastıysa kontrol
+                category.IsStatus = entity.IsStatus;
+
+                db.SaveChanges();
+                result = true;
+            }
+            return result;
         }
     }
 }
