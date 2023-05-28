@@ -71,7 +71,6 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("-------------");
                 Console.WriteLine("Id       : " + rol.Id);
                 Console.WriteLine("Ad       : " + rol.Name);
-                Console.WriteLine("Durum    : " + (rol.IsStatus ? "Aktif" : "Pasif"));
             }
             else
             {
@@ -90,7 +89,6 @@ namespace StockManagementProject.Controllers
                     Console.WriteLine("-------------");
                     Console.WriteLine("Id       : " + rol.Id);
                     Console.WriteLine("Ad       : " + rol.Name);
-                    Console.WriteLine("Durum    : " + (rol.IsStatus ? "Aktif" : "Pasif"));
                 }
             }
             else
@@ -142,8 +140,7 @@ namespace StockManagementProject.Controllers
 
             Console.Write("Rol Adı: ");
             role.Name = Console.ReadLine();
-            Console.Write("Rol Durumu Aktif (A) Pasif (P):");
-            role.IsStatus = Console.ReadLine().Substring(0, 1).ToLower() == "a" ? true : false;
+
 
             return role;
         }

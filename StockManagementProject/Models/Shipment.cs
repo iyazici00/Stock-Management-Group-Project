@@ -20,6 +20,6 @@ namespace StockManagementProject.Models
         public int ProductQuantity { get; set; }
         public DateTime ShipmentDate { get; set; } = DateTime.Now;
         public int ShipperManagerId { get; set; }
-        public User User { get; set; }
+        public User ShipperManager { get; set; }
     }
 }

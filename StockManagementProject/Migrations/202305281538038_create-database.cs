@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CreateDatabase : DbMigration
+    public partial class createdatabase : DbMigration
     {
         public override void Up()
         {
@@ -41,17 +41,16 @@
                         ProductQuantity = c.Int(nullable: false),
                         ShipmentDate = c.DateTime(nullable: false),
                         ShipperManagerId = c.Int(nullable: false),
-                        User_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Products", t => t.ProductId, cascadeDelete: true)
-                .ForeignKey("dbo.Users", t => t.User_Id)
+                .ForeignKey("dbo.Users", t => t.ShipperManagerId, cascadeDelete: true)
                 .ForeignKey("dbo.Warehouses", t => t.ReceiverWarehouseId)
                 .ForeignKey("dbo.Warehouses", t => t.ShipperWarehouseId)
                 .Index(t => t.ReceiverWarehouseId)
                 .Index(t => t.ShipperWarehouseId)
                 .Index(t => t.ProductId)
-                .Index(t => t.User_Id);
+                .Index(t => t.ShipperManagerId);
             
             CreateTable(
                 "dbo.Warehouses",
@@ -117,7 +116,7 @@
             DropForeignKey("dbo.WarehouseProductStocks", "WarehouseId", "dbo.Warehouses");
             DropForeignKey("dbo.WarehouseProductStocks", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Warehouses", "ManagerId", "dbo.Users");
-            DropForeignKey("dbo.Shipments", "User_Id", "dbo.Users");
+            DropForeignKey("dbo.Shipments", "ShipperManagerId", "dbo.Users");
             DropForeignKey("dbo.Users", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.Shipments", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Products", "CategoryId", "dbo.Categories");
@@ -125,7 +124,7 @@
             DropIndex("dbo.WarehouseProductStocks", new[] { "WarehouseId" });
             DropIndex("dbo.Users", new[] { "RoleId" });
             DropIndex("dbo.Warehouses", new[] { "ManagerId" });
-            DropIndex("dbo.Shipments", new[] { "User_Id" });
+            DropIndex("dbo.Shipments", new[] { "ShipperManagerId" });
             DropIndex("dbo.Shipments", new[] { "ProductId" });
             DropIndex("dbo.Shipments", new[] { "ShipperWarehouseId" });
             DropIndex("dbo.Shipments", new[] { "ReceiverWarehouseId" });

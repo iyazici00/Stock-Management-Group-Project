@@ -72,8 +72,16 @@ namespace StockManagementProject.Controllers
                     Console.WriteLine("Id              : " + warehouse.Id);
                     Console.WriteLine("Depo İsmi       : " + warehouse.Name);
                     Console.WriteLine("Deponun Semti   : " + warehouse.District);
-                    Console.WriteLine("Depo Yönetici Id: " + warehouse.ManagerId);
-                    Console.WriteLine("Depo Yöneticisi : " + depoYonetici.Name);
+                    if (depoYonetici.Id != 1) 
+                    {
+                        Console.WriteLine("Depo Yönetici Id: " + warehouse.ManagerId);
+                        Console.WriteLine("Depo Yöneticisi : " + depoYonetici.Name); 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Depo Yöneticisi : Yok");
+                    }
+
                     Console.WriteLine("Depo Durumu     : " + (warehouse.IsStatus ? "Aktif" : "Pasif"));
                     Console.WriteLine();
                     Console.WriteLine();

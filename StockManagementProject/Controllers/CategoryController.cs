@@ -172,8 +172,7 @@ namespace StockManagementProject.Controllers
 
             Console.Write("Kategori İsmi: ");
             category.Name = Console.ReadLine();
-            Console.Write("Kategori Durumu Aktif(A) Pasif(P): ");
-            category.IsStatus = Console.ReadLine().Substring(0, 1).ToLower() == "a" ? true : false;
+
             return category;
         }
 

@@ -106,6 +106,15 @@ namespace StockManagementProject
                         Console.WriteLine("5. Mevcut Depoya Yapılmış Sevkiyatları Görüntüle");
                         rolec = 's';
                     }
+                    else
+                    {
+                        Console.WriteLine("Henüz Rol Atamanız Admin Tarafından Gerçekleştirilmemiştir");
+                        Console.WriteLine("Rolünüz atanana kadar sisteme giriş sağlayamazsınız ");
+                        Console.WriteLine();
+                        Console.WriteLine("Herhangi Bir Tuşa Basarak Ana Menüye Dönebilirsiniz");
+                        Console.ReadKey();
+                        break;
+                    }
                     Console.WriteLine("0. Çıkış Yap");
 
                     Console.Write("Seçim: ");

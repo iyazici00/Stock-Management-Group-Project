@@ -63,9 +63,9 @@
     <Compile Include="DataAccessLayer\DataContext.cs" />
     <Compile Include="Interfaces\IController.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Migrations\202305272037349_Create-Database.cs" />
-    <Compile Include="Migrations\202305272037349_Create-Database.designer.cs">
-      <DependentUpon>202305272037349_Create-Database.cs</DependentUpon>
+    <Compile Include="Migrations\202305281538038_create-database.cs" />
+    <Compile Include="Migrations\202305281538038_create-database.designer.cs">
+      <DependentUpon>202305281538038_create-database.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Abstract\CommonProperty.cs" />
@@ -91,8 +91,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202305272037349_Create-Database.resx">
-      <DependentUpon>202305272037349_Create-Database.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202305281538038_create-database.resx">
+      <DependentUpon>202305281538038_create-database.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
