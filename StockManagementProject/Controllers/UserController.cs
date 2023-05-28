@@ -60,9 +60,21 @@ namespace StockManagementProject.Controllers
         
         public void Add()
         {
-            Console.WriteLine(repository.Add(SetValue()) ?
-                    "Ekleme Başarılı" :
-                    "Ekleme Başarısız");
+
+
+            Console.Clear();
+            Console.WriteLine();
+            if (repository.Add(SetValue()) == true)
+            {
+                Console.Clear();
+                Console.WriteLine("Kayıt Başarılı");
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Kayıt Başarısız");
+            }
+
         }
 
         public void Delete()
@@ -83,8 +95,12 @@ namespace StockManagementProject.Controllers
                         DeleteHelp(user);
                         break;
                     case "h":
+                        Console.Clear();
+                        CheckForContinue();
                         break;
                     default:
+                        GetSwitchErrorMessage();
+
                         break;
                 }
 
@@ -92,8 +108,14 @@ namespace StockManagementProject.Controllers
             }
             else
             {
-                Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500);
+                GetSwitchErrorMessage();
             }
+        }
+        public  void GetSwitchErrorMessage()
+        {
+            Console.Clear();
+            Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz");
+            CheckForContinue();
         }
         public void DeleteHelp(User user)
         {
@@ -119,6 +141,12 @@ namespace StockManagementProject.Controllers
         {
             Console.Clear();
             User user = repository.GetById(id);
+            var rol = (from role in roleRepository.GetAll()
+                       where role.Id == user.RoleId
+                       select new
+                       {
+                           rolAd = role.Name,
+                       }).FirstOrDefault();
             if (user != null)
             {
                 Console.WriteLine("Kullanıcı Detayları");
@@ -126,8 +154,7 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Ad    : " + user.Name);
                 Console.WriteLine("Soyad : " + user.Surname);
                 Console.WriteLine("Email : " + user.Email);
-                //role
-
+                Console.WriteLine("Rol    : " + rol.rolAd);
             }
             else
             {
@@ -135,11 +162,22 @@ namespace StockManagementProject.Controllers
             }
             return user;
         }
+        public User GetJustObject(int id)
+        {
+            User user = repository.GetById(id);          
+            return user;
+        }
         public void Getvoid(int id)
         {
             Console.Clear();
 
             User user = repository.GetById(id);
+            var rol = (from role in roleRepository.GetAll()
+                       where role.Id == user.RoleId
+                       select new
+                       {
+                           rolAd = role.Name,
+                       }).FirstOrDefault();
             if (user != null)
             {
                 Console.WriteLine("Kullanıcı Detayları");
@@ -147,7 +185,8 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Ad    : " + user.Name);
                 Console.WriteLine("Soyad : " + user.Surname);
                 Console.WriteLine("Email : " + user.Email);
-                //role
+                Console.WriteLine("Rol    : " + rol.rolAd);
+
                 Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
                 Console.ReadKey();
             }
@@ -169,23 +208,31 @@ namespace StockManagementProject.Controllers
                                  where warehouse.ManagerId == user.Id
                                  select new
                                  {
-                                     DepoId = warehouse.Id,
-                                     DepoAd = warehouse.Name
+                                     depoId = warehouse.Id,
+                                     depoAd = warehouse.Name
+                                 }).FirstOrDefault();
+                    var rol = (from role in roleRepository.GetAll()
+                                 where role.Id == user.RoleId
+                                 select new
+                                 {
+                                     rolAd= role.Name,
                                  }).FirstOrDefault();
                     Console.WriteLine("-------------");
                     Console.WriteLine("Id     : " + user.Id);
                     Console.WriteLine("Ad     : " + user.Name);
                     Console.WriteLine("Soyad  : " + user.Surname);
                     Console.WriteLine("Email  : " + user.Email);
-                    if(sorgu !=null )
+                    Console.WriteLine("Rol    : "+ rol.rolAd);
+                    if (sorgu !=null )
                     {
-                        Console.WriteLine("Bağlı Olduğu Depo Ad:" + sorgu.DepoAd);
-                        Console.WriteLine("Bağlı Olduğu Depo Id:" + sorgu.DepoId);
+                        Console.WriteLine("Bağlı Olduğu Depo Ad:" + sorgu.depoAd);
+                        Console.WriteLine("Bağlı Olduğu Depo Id:" + sorgu.depoId);
                     }
                     else
                     {
                         Console.WriteLine("Kullanıcının Bağlı Olduğu Depo Bulunmamaktadır");
                     }
+                    Console.WriteLine("------------------------");
 
 
                 }
@@ -252,7 +299,6 @@ namespace StockManagementProject.Controllers
             Console.Write("Şifre : ");
             user.Password = Console.ReadLine();
             user.RoleId=1;
-            user.IsStatus = true;
 
             return user;
         }
@@ -280,13 +326,13 @@ namespace StockManagementProject.Controllers
             GetAll();
             Console.WriteLine();
             Console.WriteLine("---------------------------");
-            Console.WriteLine("---------------------------");
             Console.WriteLine();
             roleController.GetAll();
             Console.WriteLine("------------------------");
+            Console.WriteLine();
             Console.Write("Rolünü Değiştirmek İstediğiniz Kullanıcının Id Giriniz:");
             int select = Convert.ToInt32(Console.ReadLine().Substring(0, 1));
-            User user = Get(select);
+            User user = GetJustObject(select);
             Console.WriteLine("-----------------");
             Console.WriteLine();
             Console.Write("Kullanıcıya Atanacak Yeni Rolün Idsini Giriniz:");
@@ -295,9 +341,12 @@ namespace StockManagementProject.Controllers
             repository.Update(user);
 
         }
+        //public User Get
         public User Get()
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
