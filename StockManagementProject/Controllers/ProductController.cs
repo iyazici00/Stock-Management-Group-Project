@@ -13,7 +13,7 @@ namespace StockManagementProject.Controllers
     internal class ProductController : IController<Product>
     {
         ProductRepository repository = new ProductRepository();
-
+        CategoryRepository repositoryCategory = new CategoryRepository();
         public void Add()
         {
             Console.Clear();
@@ -28,16 +28,33 @@ namespace StockManagementProject.Controllers
 
             Console.Write("Silinecek Ürün Id Giriniz: ");
             int id = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine(repository.Delete(id) ? "Silme İşlemi Başarılı" : " Silme İşlemi Başarısız");
+
+            Console.Clear();
+            GetAll();
+
+            if (repository.Delete(id))
+            {
+                Console.Clear();
+                Console.WriteLine("Silme İşlemi Başarılı");
+                Console.WriteLine();
+                GetAll();
+                Console.WriteLine("Ana Menü İçin Bir Tuşa Basın");
+            }
+            else
+            {
+                Console.WriteLine("Silme İşlemi Başarısız");
+            }
+
+            CheckForContinue();
 
 
         }
-        CategoryRepository repositoryCategory = new CategoryRepository();
+
         public Product Get()
         {
             GetAll();
 
-            Console.Write("Detayını Görmek İstediğiniz Ürün Id: ");
+            Console.Write("\nİstediğiniz Ürün Id: ");
             int id = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             Product product = repository.GetById(id);
@@ -51,7 +68,7 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Id         :" + product.Id);
                 Console.WriteLine("İsim       :" + product.Name);
                 Console.WriteLine("Kategori   :" + category.Name);
-                Console.WriteLine("Durum      :" + (product.IsStatus ? "Aktif" : "Pasif"));
+
             }
             else
             {
@@ -62,20 +79,25 @@ namespace StockManagementProject.Controllers
 
         public void GetAll()
         {
+
             Console.WriteLine("Ürün Listesi");
             if (repository.GetAll().Count() > 0)
             {
                 foreach (var product in repository.GetAll())
                 {
+                    Category category = repositoryCategory.GetById(product.CategoryId);
+
                     Console.WriteLine("--------------");
                     Console.WriteLine("Id          :" + product.Id);
                     Console.WriteLine("İsim        :" + product.Name);
-                    Console.WriteLine("Durum      :" + (product.IsStatus ? "Aktif" : "Pasif"));
+                    Console.WriteLine("Kategori   :" + category.Name);
+
                 }
             }
             else
             {
                 Console.WriteLine("Ürün Listesi Boş");
+
             }
         }
 
@@ -127,16 +149,49 @@ namespace StockManagementProject.Controllers
         {
             Product product = new Product();
 
-            Console.Write("Ürün İsmi: ");
-            product.Name = Console.ReadLine();
-            Console.WriteLine("Ürün Durumu Aktif(A) Pasif(P):");
-            product.IsStatus = Console.ReadLine().Substring(0, 1).ToLower() == "a" ? true : false;
+
+
+            bool status = true;
+            while (status)
+            {
+                CategoryController categoryList = new CategoryController();
+
+                if (categoryList.GetAll() == false) { product = null; Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız"); Console.ReadKey(); Console.Clear(); ; break; }
+                Console.WriteLine("--------------------");
+                Console.Write("Kategori Id: ");
+                string categoryId = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(categoryId) && int.TryParse(categoryId, out int categoryIdInt))
+                {
+                    Category categoryIsNull = repositoryCategory.GetAll().FirstOrDefault(x => x.Id == categoryIdInt);
+
+                    if (categoryIsNull != null)
+                    {
+                        product.CategoryId = categoryIdInt;
+                        Console.Write("Ürün İsmi: ");
+                        product.Name = Console.ReadLine();
+
+                        status = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Geçerli Bir Kategori Id Giriniz");
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Geçerli Bir Kategori Id Giriniz");
+                    Console.WriteLine();
+                }
+            }
+
             return product;
         }
 
         public void Update()
         {
-            Console.Clear ();
+            Console.Clear();
             Product product = Get();
             Console.WriteLine();
             Console.WriteLine("-------------");

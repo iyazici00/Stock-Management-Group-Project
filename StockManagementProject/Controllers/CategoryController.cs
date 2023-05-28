@@ -20,7 +20,7 @@ namespace StockManagementProject.Controllers
         {
             Console.Clear();
             Console.WriteLine(repository.Add(SetValue()) ? "Ekleme Başarılı" : "Ekleme Başarısız");
-            Thread.Sleep(2000);
+            CheckForContinue();
 
         }
 
@@ -58,9 +58,8 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("--------------");
                 Console.WriteLine("Id         :" + category.Id);
                 Console.WriteLine("İsim       :" + category.Name);
-                Console.WriteLine("Durum      :" + (category.IsStatus ? "Aktif" : "Pasif"));
-                Console.WriteLine("\nKategori Ürünleri");
-                Console.WriteLine("-------------------");
+
+
 
                 var sorgu = (from product in productRepository.GetAll()
                              where product.CategoryId == id
@@ -69,11 +68,22 @@ namespace StockManagementProject.Controllers
                                  productNames = product.Name
                              });
                 int i = 0;
-                foreach (var product in sorgu)
+
+                if (sorgu.Count() > 0)
                 {
-                    i++;
-                    Console.WriteLine(i +". "+ product.productNames);
+                    Console.WriteLine("\nKategori Ürünleri");
+                    Console.WriteLine("-------------------");
+                    foreach (var product in sorgu)
+                    {
+                        i++;
+                        Console.WriteLine(i + ". " + product.productNames);
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Bu Kategoriye Ait Ürün Yok.");
+                }
+
 
 
             }
@@ -84,7 +94,7 @@ namespace StockManagementProject.Controllers
             return category;
         }
 
-        public void GetAll()
+        public bool GetAll()
         {
             Console.WriteLine("Kategori Listesi");
             if (repository.GetAll().Count() > 0)
@@ -96,10 +106,13 @@ namespace StockManagementProject.Controllers
                     Console.WriteLine("İsim       :" + category.Name);
                     Console.WriteLine("Durum      :" + (category.IsStatus ? "Aktif" : "Pasif"));
                 }
+                return true;
             }
             else
             {
                 Console.WriteLine("Kategori Listesi Boş");
+                return false;
+
             }
 
         }
@@ -148,8 +161,7 @@ namespace StockManagementProject.Controllers
                         Console.WriteLine("Tanımsız işlem Tekrar Deneyiniz");
                         break;
                 }
-                Console.WriteLine("Devam Etmek İçin Bir Tuşa Basınız");
-                Console.ReadKey();
+
 
             }
         }
@@ -189,5 +201,11 @@ namespace StockManagementProject.Controllers
             Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
             Console.ReadKey();
         }
+
+        void IController<Category>.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
