@@ -35,10 +35,11 @@ namespace StockManagementProject.Controllers
                              productIds = product.Id
                          }).ToList();
 
-            if (id > 1 && sorgu.Count() == 0)
+            if (id > 0 && sorgu.Count() == 0)
             {
                 Console.WriteLine(repository.Delete(id) ? "Silme İşlemi Başarılı" : "Silme İşlemi Başarısız");
             }
+            CheckForContinue() ;
         }
 
         public Category Get()

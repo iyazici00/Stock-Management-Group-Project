@@ -86,11 +86,12 @@ namespace StockManagementProject.Controllers
                     Console.WriteLine("Alıcı Depo            : " + warehouseRepository.GetById(shipment.ReceiverWarehouseId).Name);
                     if (user != null)
                     {
-                        Console.WriteLine("İşlemi Gerçekleştiren : " +user.Id +"Id'li "+user.Name+" "+user.Surname );
+                        Console.WriteLine("İşlemi Gerçekleştiren : " +user.Name+" "+user.Surname );
                     }
                     else
                     {
-                        Console.WriteLine("İşlemi Gerçekleştiren"+shipment.Id+ "Id'li kullanıcı sistemden silinmiştir");
+                        Console.WriteLine("İşlemi Gerçekleştiren : "+shipment.Id+ " Id'li kullanıcı sistemden silinmiştir");
+                        Console.WriteLine("Detaylı bilgi için lütfen adminle görüşünüz!!");
                     }
                     Console.WriteLine("Sevk edilen Ürün      :"+ productRepository.GetById(shipment.ProductId).Name);
                     Console.WriteLine("Sevk edilen Miktar    :"+ shipment.ProductQuantity);

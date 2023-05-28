@@ -12,11 +12,21 @@ namespace StockManagementProject
     internal class Program
     {
         // boş role ıd=1   boş user ıd= 1;
-        //default admin mail: şifre:
-        //default sevkiyatçı mail: şifre:
+        // default admin mail:admin şifre:123
+        // default sevkiyatçı mail:ismail şifre:123
+        // default sevkiyatçı mail:furkan şifre:123
+        // kayıt olma işleminden sonra eğer admin kullanıcılara sevkiyatçı rolü atamaz ise 
+        // kullanıcılar sevkiyatçı olarak giriş yapamazlar yani rol atama işleminin gerçekleştirilmesi gerekmektedir.
 
         static void Main(string[] args)
         {
+            Console.WriteLine("default admin mail:admin şifre:123");
+            Console.WriteLine("default sevkiyatçı mail:ismail şifre:123");
+            Console.WriteLine("default sevkiyatçı mail:furkan şifre:123");
+            Console.WriteLine("Kayıt olma işleminden sonra admin ilgili kullanıcıya kendi panelinden rol atamalıdır yoksa kullanıcı sevkiyat işlemleri gerçekleştiremez");
+            Console.WriteLine();
+            Console.WriteLine("Devam etmek için herhangi bir tuşa basınız");
+            Console.ReadKey();
             GetFirstPage();   
         }
 

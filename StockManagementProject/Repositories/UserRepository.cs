@@ -25,15 +25,16 @@ namespace StockManagementProject.Repositories
             return false;
 
         }
-
+        
         public bool Delete(int id)
         {
-            User user = db.User.Find(id);
+            User user = db.User.FirstOrDefault(x => x.Id == id && x.IsStatus == true);
             if (user != null)
             {
                 try
                 {
-                    db.User.Remove(user);
+                    user.IsStatus = false;
+                    
                     db.SaveChanges();
                     return true;
                 }
@@ -48,23 +49,23 @@ namespace StockManagementProject.Repositories
 
         public List<User> GetAll()
         {
-            return db.User.ToList();
+            return db.User.Where(x=>x.IsStatus==true).ToList();
         }
 
         public User GetById(int id)
         {
-            User user = db.User.FirstOrDefault(x => x.Id == id);
+            User user = db.User.FirstOrDefault(x => x.Id == id && x.IsStatus==true);
             return user;
         }
 
         public User GetByLogin(string mail, string password)
         {
-            User user=db.User.Where(x=>x.Email==mail &&  x.Password==password).FirstOrDefault();
+            User user=db.User.Where(x=>x.Email==mail &&  x.Password==password && x.IsStatus==true).FirstOrDefault();
             return user;
         }
         public bool Update(User entity)
         {
-            var user = db.User.Find(entity.Id);
+            var user = db.User.FirstOrDefault(x=>x.Id==entity.Id && x.IsStatus==true);
             if (user != null && !String.IsNullOrWhiteSpace(entity.Name) && !String.IsNullOrWhiteSpace(entity.Surname)&& !String.IsNullOrWhiteSpace(entity.Email)&& !String.IsNullOrWhiteSpace(entity.Password)&& entity.RoleId>0)
             {
                 user.Name = entity.Name;

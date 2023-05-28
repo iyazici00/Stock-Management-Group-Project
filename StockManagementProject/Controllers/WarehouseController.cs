@@ -44,6 +44,9 @@ namespace StockManagementProject.Controllers
             {
                 Console.WriteLine("Silme İşlemi Başarısız");
             }
+            Console.WriteLine("-------------------");
+            Console.WriteLine();
+            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
             Console.ReadKey();
         }
 
