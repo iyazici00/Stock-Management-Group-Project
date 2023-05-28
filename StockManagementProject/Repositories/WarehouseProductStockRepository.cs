@@ -133,7 +133,7 @@ namespace StockManagementProject.Repositories
             if (warehouseProductStock != null)
             {
                 warehouseProductStock.WarehouseId = entity.WarehouseId;
-                warehouseProductStock.ProductId =entity.ProductId; ;
+                warehouseProductStock.ProductId =entity.ProductId; 
                 warehouseProductStock.ProductQuantity = entity.ProductQuantity;
                
 

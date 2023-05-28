@@ -18,7 +18,7 @@ namespace StockManagementProject.Controllers
         ProductRepository productRepository = new ProductRepository();
         UserRepository userRepository = new UserRepository();
 
-        
+
         public void Add()
         {
             Console.Clear();
@@ -32,7 +32,7 @@ namespace StockManagementProject.Controllers
             GetAll();
             Console.Write("Silinecek Depo Id Giriniz: ");
             int id = Convert.ToInt32(Console.ReadLine());
-            
+
 
             if (repository.Delete(id))
             {
@@ -51,46 +51,51 @@ namespace StockManagementProject.Controllers
 
         public Warehouse Get()
         {
-            
-            GetAll();
-            Console.WriteLine();
-            Console.Write("Depo Id Giriniz: ");
-            int id = Convert.ToInt32(Console.ReadLine());
-            Console.Clear();
-            Warehouse warehouse = repository.GetById(id);
-            User depoYonetici = userRepository.GetById(warehouse.ManagerId);
+            bool status = true;
+            Warehouse warehouse = null;
 
-
-            
-
-            if (warehouse != null)
+            while (status)
             {
-                Console.WriteLine("Depo Detayları");
-                Console.WriteLine("-------------");
-                Console.WriteLine("Id              : " + warehouse.Id);
-                Console.WriteLine("Depo İsmi       : " + warehouse.Name);
-                Console.WriteLine("Deponun Semti   : " + warehouse.District);
-                Console.WriteLine("Depo Yönetici Id: " + warehouse.ManagerId);
-                Console.WriteLine("Depo Yöneticisi : " + depoYonetici.Name);
-                Console.WriteLine("Depo Durumu     : " + (warehouse.IsStatus ? "Aktif" : "Pasif"));
-                Console.WriteLine();
-                Console.WriteLine();
-                
-                WarehouseProducts(warehouse.Id);
-               
+                Console.Clear();
+                GetAll();
+
+                Console.Write("Depo Id Giriniz: ");
+                int id = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                warehouse = repository.GetById(id);
+
+                if (warehouse != null)
+                {
+                    User depoYonetici = userRepository.GetById(warehouse.ManagerId);
+                    Console.WriteLine("Depo Detayları");
+                    Console.WriteLine("-------------");
+                    Console.WriteLine("Id              : " + warehouse.Id);
+                    Console.WriteLine("Depo İsmi       : " + warehouse.Name);
+                    Console.WriteLine("Deponun Semti   : " + warehouse.District);
+                    Console.WriteLine("Depo Yönetici Id: " + warehouse.ManagerId);
+                    Console.WriteLine("Depo Yöneticisi : " + depoYonetici.Name);
+                    Console.WriteLine("Depo Durumu     : " + (warehouse.IsStatus ? "Aktif" : "Pasif"));
+                    Console.WriteLine();
+                    Console.WriteLine();
+
+                    WarehouseProducts(warehouse.Id);
+                    status = false;
+                }
+                else
+                {
+                    Console.WriteLine("Depo Bulunamadı Devam Etmek İçin Bir Tuşa Basınız");
+                    Console.ReadKey();
+                }
             }
-            else
-            {
-                Console.WriteLine("Depo Bulunamadı");
-            }
+
             return warehouse;
         }
         public void Get(int id)
         {
 
-         
+
             Console.WriteLine();
-            
+
             Console.Clear();
             User depoYonetici = userRepository.GetById(id);
             Warehouse warehouse = repository.GetByManagerId(depoYonetici.Id);
@@ -111,12 +116,13 @@ namespace StockManagementProject.Controllers
 
                 WarehouseProducts(warehouse.Id);
 
+
             }
             else
             {
                 Console.WriteLine("Depo Bulunamadı");
             }
-           
+
         }
 
         public void GetAll()
@@ -125,19 +131,19 @@ namespace StockManagementProject.Controllers
             Console.WriteLine();
             if (repository.GetAll().Count > 0)
             {
-              
+
                 foreach (var depo in repository.GetAll())
                 {
 
                     Warehouse warehouse = repository.GetById(depo.Id);
                     User depoYonetici = userRepository.GetById(warehouse.ManagerId);
 
-                    Console.WriteLine("Depo Id:           "+depo.Id);
-                    Console.WriteLine("Depo İsmi:         "+depo.Name);
-                    Console.WriteLine("Depo Semti:        "+depo.District);
-                    Console.WriteLine("Depo Yönetici Id:  "+depo.ManagerId);
-                    Console.WriteLine("Depo Yönetici Adı: "+depoYonetici.Name);
-                    Console.WriteLine("Depo Durum:        "+(depo.IsStatus ? "Aktif":"Pasif"));
+                    Console.WriteLine("Depo Id:           " + depo.Id);
+                    Console.WriteLine("Depo İsmi:         " + depo.Name);
+                    Console.WriteLine("Depo Semti:        " + depo.District);
+                    Console.WriteLine("Depo Yönetici Id:  " + depo.ManagerId);
+                    Console.WriteLine("Depo Yönetici Adı: " + depoYonetici.Name);
+                    Console.WriteLine("Depo Durum:        " + (depo.IsStatus ? "Aktif" : "Pasif"));
                     Console.WriteLine();
 
 
@@ -147,7 +153,7 @@ namespace StockManagementProject.Controllers
             {
                 Console.WriteLine("Depo Listesi Boş");
             }
-           
+
         }
 
         public void Menu()
@@ -157,14 +163,15 @@ namespace StockManagementProject.Controllers
             {
                 Console.Clear();
 
-                Console.WriteLine("Depo İşlemi Seçiniz");
-                Console.WriteLine("-------------------");
-                Console.WriteLine("Depo Ekle       (1)");
-                Console.WriteLine("Depo Detayları  (2)");
-                Console.WriteLine("Depo Sil        (3)");
-                Console.WriteLine("Depo Güncelle   (4)");
-                Console.WriteLine("Depo Listesi    (5)");
-                Console.WriteLine("Üst Menü        (0)");
+                Console.WriteLine("--Depo İşlemi Seçiniz--");
+                Console.WriteLine("-----------------------");
+                Console.WriteLine("Depo Ekle           (1)");
+                Console.WriteLine("Depo Detayları      (2)");
+                Console.WriteLine("Depo Sil            (3)");
+                Console.WriteLine("Depo Güncelle       (4)");
+                Console.WriteLine("Depo Stok Güncelle  (5)");
+                Console.WriteLine("Depo Listesi        (6)");
+                Console.WriteLine("Üst Menü            (0)");
                 Console.WriteLine();
                 Console.Write("İşlem Seçiniz: ");
                 int select = Convert.ToInt32(Console.ReadLine());
@@ -176,7 +183,8 @@ namespace StockManagementProject.Controllers
                     case 2: Get(); Console.ReadKey(); break;
                     case 3: Delete(); break;
                     case 4: Update(); break;
-                    case 5: GetAll(); Console.ReadKey(); break;
+                    case 5: ChangeQuantity(); break;
+                    case 6: GetAll(); Console.ReadKey(); break;
                     case 0: status = !status; break;
                     default: Console.WriteLine("Tanımsız İşlem Tekrar Deneyiniz"); break;
                 }
@@ -202,7 +210,7 @@ namespace StockManagementProject.Controllers
             while (status)
             {
 
-                
+
                 Console.Write("Depo Yönetici Id: ");
                 string managerid = Console.ReadLine();
 
@@ -215,7 +223,7 @@ namespace StockManagementProject.Controllers
 
                     if (depoVarMı != null)
                     {
-                       
+
                         Console.WriteLine("Bu Kullanıcının Zaten Bir Depo İle ilişkisi Var Tekrar Deneyin");
                     }
                     else if (managerisIsNull != null)
@@ -238,7 +246,7 @@ namespace StockManagementProject.Controllers
 
 
 
-           
+
 
             return warehouse;
         }
@@ -252,10 +260,10 @@ namespace StockManagementProject.Controllers
 
             Warehouse warehouse = db.Warehouse.FirstOrDefault(x => x.Id == id);
 
-            if (warehouse!=null)
+            if (warehouse != null)
             {
                 Warehouse setWarehouse = SetValue();
-                if (setWarehouse!=null)
+                if (setWarehouse != null)
                 {
                     setWarehouse.Id = warehouse.Id;
                     warehouse = setWarehouse;
@@ -282,16 +290,75 @@ namespace StockManagementProject.Controllers
                         where w.Id == warehouseId
                         select new { p.Name, wp.ProductId, wp.ProductQuantity };
 
-            
+
             foreach (var item in sorgu)
             {
-                
+
                 Console.WriteLine($"{item.ProductId} \t\t {item.Name} \t\t {item.ProductQuantity}");
             }
         }
 
         public void ChangeQuantity()
         {
+            Warehouse warehouse = Get();
+
+            if (warehouse != null)
+            {
+                Console.Write("Stoğunu değiştirmek istediğiniz ürünün Id'sini girin: ");
+                int id = Convert.ToInt32(Console.ReadLine());
+                Product product = productRepository.GetById(id);
+
+                WarehouseProductStock warehouseProductStock = productStockRepository.GetAll().FirstOrDefault(x => x.WarehouseId == warehouse.Id && x.ProductId == product.Id);
+
+                if (product != null)
+                {
+                    Console.Write("Stoğu artırmak için (+) azaltmak için (-) ");
+                    string islem = Console.ReadLine().Substring(0, 1);
+
+                    Console.Write("Miktarı giriniz: ");
+                    int miktar = Convert.ToInt32(Console.ReadLine());
+
+
+                    switch (islem)
+                    {
+                        case "+":
+                            warehouseProductStock.ProductQuantity += miktar;
+                            productStockRepository.Update(warehouseProductStock);
+                            Console.WriteLine("Stok arttırma başarılı");
+                            break;
+                        case "-":
+                            int temp = warehouseProductStock.ProductQuantity - miktar;
+
+                            if (temp < 0)
+                            {
+                                Console.WriteLine("Stok 0 ın altına düşemez");
+                            }
+                            else
+                            {
+                                warehouseProductStock.ProductQuantity = temp;
+                                productStockRepository.Update(warehouseProductStock);
+                            }
+
+                            break;
+                        default:
+                            Console.WriteLine("Yanlış giriş yaptınız");
+                            break;
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Böyle bir ürün yok");
+
+                }
+                Console.WriteLine("Devam etmek için bir tuşa basınız.");
+                Console.ReadKey();
+
+            }
+            else
+            {
+                Console.ReadKey();
+            }
 
         }
     }

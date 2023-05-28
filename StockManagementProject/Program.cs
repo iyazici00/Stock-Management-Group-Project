@@ -26,7 +26,7 @@ namespace StockManagementProject
             while (status)
             {
                 Console.Clear();
-                Console.WriteLine("Stock Yönetim Sistemine Hoşgeldiniz");
+                Console.WriteLine("Stok Yönetim Sistemine Hoşgeldiniz");
                 Console.WriteLine("1. Giriş Yap");
                 Console.WriteLine("2. Kayıt Ol");
                 Console.WriteLine("0. Programı Kapat");
@@ -66,7 +66,7 @@ namespace StockManagementProject
             {
                 if (login == false)
                 {
-                    Console.WriteLine("Stock Yönetim Sistemine Hoşgeldiniz");
+                    Console.WriteLine("Stok Yönetim Sistemine Hoşgeldiniz");
                     Console.WriteLine("Devam Etmek İçin Lütfen Giriş Yapınız");
                     userController.Login(out userId, out userRole);
                     if (userId != 0 && userRole != "Hata")
@@ -125,7 +125,7 @@ namespace StockManagementProject
                             //Sevkiyat panel girdileri
                             case "1s": userController.Getvoid(userId); break;
                             case "2s": userController.Update(userId); break;
-                            case "3s": warehouseController.Get(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
+                            case "3s": warehouseController.Get(userId); CheckForContinue(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
                             case "4s": break; //shipment !!
                             case "5s": break; //shipment
                             case "0a":
