@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StockManagementProject.Controllers
 {
@@ -21,7 +19,7 @@ namespace StockManagementProject.Controllers
             Console.WriteLine(repository.Add(SetValue()) ?
                                 "Ekleme Başarılı" :
                                 "Ekleme Başarısız");
-            Thread.Sleep(2000);
+            CheckForContinue();
 
         }
 
@@ -45,7 +43,7 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine(repository.Delete(id) ?
                     "Silme İşlemi Başarılı" :
                     "Silme İşlemi Başarısız");
-                Thread.Sleep(2500);
+                CheckForContinue();
             }
             else
             {
@@ -53,7 +51,7 @@ namespace StockManagementProject.Controllers
 
                 Console.WriteLine("Silme İşlemi Başarısız");
                 Console.WriteLine("Silmeye Çalıştığınız Role Sahip Kullanıcılar Bulunuyor Olabilir");
-                Thread.Sleep(3000);
+                CheckForContinue();
 
             }
         }

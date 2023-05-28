@@ -1,4 +1,5 @@
-﻿using StockManagementProject.Interfaces;
+﻿using StockManagementProject.DataAccessLayer;
+using StockManagementProject.Interfaces;
 using StockManagementProject.Models;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,15 @@ namespace StockManagementProject.Repositories
 {
     internal class ShipmentRepository : IRepository<Shipment>
     {
+        DataContext db = new DataContext();
+
         public bool Add(Shipment entity)
         {
-            throw new NotImplementedException();
+
+                db.Shipment.Add(entity);
+                db.SaveChanges();
+                return true;
+  
         }
 
         public bool Delete(int id)
@@ -22,7 +29,7 @@ namespace StockManagementProject.Repositories
 
         public List<Shipment> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Shipment.ToList();
         }
 
         public Shipment GetById(int id)

@@ -7,8 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
 
 namespace StockManagementProject.Controllers
 {
@@ -132,7 +131,7 @@ namespace StockManagementProject.Controllers
             Console.WriteLine(repository.Delete(user.Id) ?
                                 "Silme Başarılı" :
                                 "Silme Başarısız");
-            Thread.Sleep(2000);
+            CheckForContinue();
 
 
         }
@@ -269,12 +268,12 @@ namespace StockManagementProject.Controllers
                         case 2: Console.Clear(); GetAll(); CheckForContinue(); break;
                         case 3: Update(); break;
                         case 0: return;
-                        default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500); break;
+                        default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); CheckForContinue(); break;
                     }
                 }
                 else
                 {
-                    Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500);
+                    Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); CheckForContinue();
                 }
 
             }

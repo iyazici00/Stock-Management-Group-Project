@@ -28,7 +28,7 @@ namespace StockManagementProject.Repositories
 
         public bool Delete(int id)
         {
-            var user = db.User.Find(id);
+            User user = db.User.Find(id);
             if (user != null)
             {
                 try
@@ -53,7 +53,7 @@ namespace StockManagementProject.Repositories
 
         public User GetById(int id)
         {
-            var user = db.User.Find(id);
+            User user = db.User.FirstOrDefault(x => x.Id == id);
             return user;
         }
 

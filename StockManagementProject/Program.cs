@@ -56,6 +56,7 @@ namespace StockManagementProject
             WarehouseController warehouseController = new WarehouseController();
             RoleController roleController = new RoleController();
             UserController userController = new UserController();
+            ShipmentController shipmentController = new ShipmentController();
 
             bool status = true;
             bool login = false;
@@ -135,8 +136,8 @@ namespace StockManagementProject
                             case "1s": userController.Getvoid(userId); break;
                             case "2s": userController.Update(userId); break;
                             case "3s": warehouseController.Get(userId); CheckForContinue(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
-                            case "4s": break; //shipment !!
-                            case "5s": break; //shipment
+                            case "4s": shipmentController.MakeShipment(userId); CheckForContinue(); break; //shipment !!
+                            case "5s": shipmentController.GetAll(userId); CheckForContinue(); break; //shipment
                             case "0a":
                             case "0s":
                                 status = false;

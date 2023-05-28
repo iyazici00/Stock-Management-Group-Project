@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StockManagementProject.Controllers
 {
@@ -23,8 +21,8 @@ namespace StockManagementProject.Controllers
         {
             Console.Clear();
             Console.WriteLine(repository.Add(SetValue()) ? "Ekleme Başarılı" : "Ekleme Başarısız");
-            Thread.Sleep(2000);
-
+            Console.WriteLine("Devam etmek için herhangi bir tuşa basınız");
+            Console.ReadKey();
         }
 
         public void Delete()
@@ -82,7 +80,6 @@ namespace StockManagementProject.Controllers
                         Console.WriteLine("Depo Yöneticisi : Yok");
                     }
 
-                    Console.WriteLine("Depo Durumu     : " + (warehouse.IsStatus ? "Aktif" : "Pasif"));
                     Console.WriteLine();
                     Console.WriteLine();
 
@@ -92,6 +89,38 @@ namespace StockManagementProject.Controllers
                 else
                 {
                     Console.WriteLine("Depo Bulunamadı Devam Etmek İçin Bir Tuşa Basınız");
+                    Console.ReadKey();
+                }
+            }
+
+            return warehouse;
+        }
+        public Warehouse GetShp(int currentWarehouseId)
+        {
+            bool status = true;
+            Warehouse warehouse = null;
+
+            while (status)
+            {
+                Console.Clear();
+                GetAll();
+
+                Console.WriteLine("Çıkış için (0)");
+                Console.Write("Sevkiyat Yapacağınız Depo Id Giriniz: ");
+                int id = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                warehouse = repository.GetById(id);
+                if (id == 0)
+                {
+                    status = false;
+                }
+                else if (warehouse != null && warehouse.Id!=currentWarehouseId)
+                {
+                    return warehouse;
+                }
+                else
+                {
+                    Console.WriteLine("Depo Bulunamadı Tekrar Seçmek İçin Bir Tuşa Basınız");
                     Console.ReadKey();
                 }
             }
@@ -118,7 +147,6 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("Deponun Semti   : " + warehouse.District);
                 Console.WriteLine("Depo Yönetici Id: " + warehouse.ManagerId);
                 Console.WriteLine("Depo Yöneticisi : " + depoYonetici.Name);
-                Console.WriteLine("Depo Durumu     : " + (warehouse.IsStatus ? "Aktif" : "Pasif"));
                 Console.WriteLine();
                 Console.WriteLine();
 
@@ -151,7 +179,6 @@ namespace StockManagementProject.Controllers
                     Console.WriteLine("Depo Semti:        " + depo.District);
                     Console.WriteLine("Depo Yönetici Id:  " + depo.ManagerId);
                     Console.WriteLine("Depo Yönetici Adı: " + depoYonetici.Name);
-                    Console.WriteLine("Depo Durum:        " + (depo.IsStatus ? "Aktif" : "Pasif"));
                     Console.WriteLine();
 
 
@@ -192,7 +219,7 @@ namespace StockManagementProject.Controllers
                     case 3: Delete(); break;
                     case 4: Update(); break;
                     case 5: ChangeQuantity(); break;
-                    case 6: GetAll(); Console.ReadKey(); break;
+                    case 6: GetAll(); Console.WriteLine("Devam etmek için bir tuşa basınız"); Console.ReadKey(); break;
                     case 0: status = !status; break;
                     default: Console.WriteLine("Tanımsız İşlem Tekrar Deneyiniz"); break;
                 }
