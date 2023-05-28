@@ -16,8 +16,9 @@ namespace StockManagementProject.Controllers
         WarehouseRepository repository = new WarehouseRepository();
         WarehouseProductStockRepository productStockRepository = new WarehouseProductStockRepository();
         ProductRepository productRepository = new ProductRepository();
-        DataContext db = new DataContext();
+        UserRepository userRepository = new UserRepository();
 
+        
         public void Add()
         {
             Console.Clear();
@@ -57,7 +58,7 @@ namespace StockManagementProject.Controllers
             int id = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             Warehouse warehouse = repository.GetById(id);
-            User depoYonetici = db.User.FirstOrDefault(x => x.Id == warehouse.ManagerId);
+            User depoYonetici = userRepository.GetById(warehouse.ManagerId);
 
 
             
@@ -84,7 +85,39 @@ namespace StockManagementProject.Controllers
             }
             return warehouse;
         }
+        public void Get(int id)
+        {
 
+         
+            Console.WriteLine();
+            
+            Console.Clear();
+            User depoYonetici = userRepository.GetById(id);
+            Warehouse warehouse = repository.GetByManagerId(depoYonetici.Id);
+
+
+            if (warehouse != null)
+            {
+                Console.WriteLine("Depo Detayları");
+                Console.WriteLine("-------------");
+                Console.WriteLine("Id              : " + warehouse.Id);
+                Console.WriteLine("Depo İsmi       : " + warehouse.Name);
+                Console.WriteLine("Deponun Semti   : " + warehouse.District);
+                Console.WriteLine("Depo Yönetici Id: " + warehouse.ManagerId);
+                Console.WriteLine("Depo Yöneticisi : " + depoYonetici.Name);
+                Console.WriteLine("Depo Durumu     : " + (warehouse.IsStatus ? "Aktif" : "Pasif"));
+                Console.WriteLine();
+                Console.WriteLine();
+
+                WarehouseProducts(warehouse.Id);
+
+            }
+            else
+            {
+                Console.WriteLine("Depo Bulunamadı");
+            }
+           
+        }
 
         public void GetAll()
         {
@@ -97,7 +130,7 @@ namespace StockManagementProject.Controllers
                 {
 
                     Warehouse warehouse = repository.GetById(depo.Id);
-                    User depoYonetici = db.User.FirstOrDefault(x => x.Id == warehouse.ManagerId);
+                    User depoYonetici = userRepository.GetById(warehouse.ManagerId);
 
                     Console.WriteLine("Depo Id:           "+depo.Id);
                     Console.WriteLine("Depo İsmi:         "+depo.Name);
@@ -161,22 +194,31 @@ namespace StockManagementProject.Controllers
             Console.Write("Semt İsmi:  ");
             warehouse.District = Console.ReadLine();
 
+            UserController userList = new UserController();
+            userList.GetAll();
+            Console.WriteLine("--------------------");
 
             bool status = true;
             while (status)
             {
-                UserController userList = new UserController();
-                userList.GetAll();
-                Console.WriteLine("--------------------");
-                Console.Write("Depo Yönetici Id: ");
 
+                
+                Console.Write("Depo Yönetici Id: ");
                 string managerid = Console.ReadLine();
 
                 if (!string.IsNullOrWhiteSpace(managerid) && int.TryParse(managerid, out int managerIdInt))
                 {
-                    User managerisIsNull = db.User.FirstOrDefault(x => x.Id == managerIdInt);
 
-                    if (managerisIsNull != null)
+                    Warehouse depoVarMı = repository.GetByManagerId(managerIdInt);
+
+                    User managerisIsNull = userRepository.GetById(managerIdInt);
+
+                    if (depoVarMı != null)
+                    {
+                       
+                        Console.WriteLine("Bu Kullanıcının Zaten Bir Depo İle ilişkisi Var Tekrar Deneyin");
+                    }
+                    else if (managerisIsNull != null)
                     {
                         warehouse.ManagerId = managerIdInt;
                         status = false;
@@ -196,8 +238,7 @@ namespace StockManagementProject.Controllers
 
 
 
-            Console.Write("Depo Durumu Aktif(A) Pasif(P):  ");
-            warehouse.IsStatus = Console.ReadLine().Substring(0, 1).ToLower() == "a" ? true : false;
+           
 
             return warehouse;
         }
@@ -247,6 +288,11 @@ namespace StockManagementProject.Controllers
                 
                 Console.WriteLine($"{item.ProductId} \t\t {item.Name} \t\t {item.ProductQuantity}");
             }
+        }
+
+        public void ChangeQuantity()
+        {
+
         }
     }
 }

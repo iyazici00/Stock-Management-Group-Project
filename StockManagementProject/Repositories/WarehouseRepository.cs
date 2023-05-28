@@ -4,6 +4,7 @@ using StockManagementProject.Interfaces;
 using StockManagementProject.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,11 @@ namespace StockManagementProject.Repositories
             Warehouse warehouse = db.Warehouse.FirstOrDefault(x => x.Id == id );
             return warehouse;
         }
-
+        public Warehouse GetByManagerId(int managerId)
+        {   
+            Warehouse warehouse = db.Warehouse.FirstOrDefault(x => x.ManagerId == managerId);
+            return warehouse;
+        }
         public bool Update(Warehouse entity)
         {
             Warehouse warehouse = db.Warehouse.FirstOrDefault(x=>x.Id == entity.Id); ;
