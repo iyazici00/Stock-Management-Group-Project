@@ -82,7 +82,6 @@ namespace StockManagementProject.Controllers
 
         public void GetAll()
         {
-            Console.Clear();
             Console.WriteLine("Rol Listesi");
             if(repository.GetAll().Count>0)
             {
@@ -98,10 +97,7 @@ namespace StockManagementProject.Controllers
             {
                 Console.WriteLine("Rol Listesi Boş");
             }
-            Console.WriteLine("--------------");
-            Console.WriteLine();
-            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
-            Console.ReadKey();
+
         }
 
         public void Menu()
@@ -125,9 +121,9 @@ namespace StockManagementProject.Controllers
                     switch (numberSelect)
                     {
                         case 1: Add(); break;
-                        case 2: GetAll(); break;
-                        case 3: Update(); break;
-                        case 4: Delete(); break;
+                        case 2: Console.Clear(); GetAll(); CheckForContinue(); break;
+                        case 3: Console.Clear(); Update(); break;
+                        case 4: Console.Clear(); Delete(); break;
                         case 0: return;
                         default: Console.WriteLine("Yanlış Giriş Gerçekleştirdiniz Lütfen Tekrar Deneyiniz"); break;
                     }
@@ -137,13 +133,6 @@ namespace StockManagementProject.Controllers
                     Console.WriteLine("Yanlış Giriş Gerçekleştirdiniz Lütfen Tekrar Deneyiniz");
                     Console.WriteLine();
                 }
-
-
-
-
-
-
-
             }
         }
 
@@ -158,7 +147,13 @@ namespace StockManagementProject.Controllers
 
             return role;
         }
-
+        public void CheckForContinue()
+        {
+            Console.WriteLine("-------------------");
+            Console.WriteLine();
+            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
+            Console.ReadKey();
+        }
         public void Update()
         {
             GetAll();

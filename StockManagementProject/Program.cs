@@ -10,6 +10,10 @@ namespace StockManagementProject
 {
     internal class Program
     {
+
+        //default admin mail: şifre:
+        //default sevkiyatçı mail: şifre:
+
         static void Main(string[] args)
         {
             RoleController roleController = new RoleController();
@@ -37,8 +41,8 @@ namespace StockManagementProject
                     else
                     {
                         Console.Clear();
-                        Console.WriteLine("Hatalı Kullanıcı Girişi Yaptınız Lütfen Tekrar Deneyiniz");
-                        Thread.Sleep(1500);
+                        Console.WriteLine("Hatalı Kullanıcı Girişi Yaptınız Giriş Ekranına Dönmek İçin Herhangi Bir Tuşa Basınız");
+                        Console.ReadKey();
                         Console.Clear();
                     }
                 }
@@ -72,22 +76,45 @@ namespace StockManagementProject
                     Console.Write("Seçim: ");
                     string select= Console.ReadLine().Substring(0,1);
                     string guide = select+rolec;
-                    switch (guide)
+                    if (!string.IsNullOrWhiteSpace(select) && int.TryParse(select, out int numberSelect) == true)
                     {
-                        //Admin panel girdileri
-                        case "1a": roleController.Menu(); break;
-                        case "2a": userController.Menu(); break;
-                        case "3a": warehouseController.Menu(); break;
-                        case "4a": categoryController.Menu(); break;
-                        case "5a": productController.Menu(); break;
-                        //Sevkiyat panel girdileri
-                        case "1s": userController.Getvoid(userId); break;
-                        case "2s": userController.Update(userId); break;
-                        case "3s": warehouseController.Get(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
-                        case "4s":  break; //shipment !!
-                        case "5s": break; //shipment
-                        default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500); break;
+
+                        switch (guide)
+                        {
+                            //Admin panel girdileri
+                            case "1a": roleController.Menu(); break;
+                            case "2a": userController.Menu(); break;
+                            case "3a": warehouseController.Menu(); break;
+                            case "4a": categoryController.Menu(); break;
+                            case "5a": productController.Menu(); break;
+                            //Sevkiyat panel girdileri
+                            case "1s": userController.Getvoid(userId); break;
+                            case "2s": userController.Update(userId); break;
+                            case "3s": warehouseController.Get(); break; //user id gönderip user id ye göre deponun gelmesi lazım!!
+                            case "4s": break; //shipment !!
+                            case "5s": break; //shipment
+                            case "0a":
+                            case "0s":
+                                Console.Write("Program Kapatılıyor");
+                                int time = 4000;
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    Console.Write(".");
+                                    Console.Beep();
+                                    time /= 5;
+                                    Thread.Sleep(time);
+                                }
+                                status = false;
+                                break;
+                            default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500); break;
+                        }
                     }
+                    else
+                    {
+                        Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500);
+                    }
+
+                    
                 }
 
 

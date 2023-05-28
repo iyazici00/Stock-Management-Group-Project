@@ -3,7 +3,9 @@ using StockManagementProject.Models;
 using StockManagementProject.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +17,7 @@ namespace StockManagementProject.Controllers
         RoleRepository roleRepository = new RoleRepository();
         UserRepository repository = new UserRepository();
         WarehouseRepository warehouseRepository = new WarehouseRepository();
+        RoleController roleController = new RoleController();
         public void Login(out int userId,out string userRole)
         {
             User user = new User();
@@ -64,27 +67,53 @@ namespace StockManagementProject.Controllers
 
         public void Delete()
         {
-            //Console.Write("Silinecek Kullanıcı Id Giriniz: ");
-            //int id = Convert.ToInt32(Console.ReadLine());
-            //var sorgu = (from user in userRepository.GetAll()
-            //             where user.RoleId == id
-            //             select new
-            //             {
-            //                 userIds = user.Id
-            //             }).ToList();
-            //if (id > 1 && sorgu.Count == 0)
-            //{
-            //    Console.WriteLine(repository.Delete(id) ?
-            //        "Silme İşlemi Başarılı" :
-            //        "Silme İşlemi Başarısız");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Silme İşlemi Başarısız");
-            //    Console.WriteLine("Silmeye Çalıştığınız Role Sahip Kullanıcılar Bulunuyor Olabilir");
-            //}
-        }
+            GetAll();
+            Console.Write("Silinecek Kullanıcı Id Giriniz: ");
+            string select = Console.ReadLine().Substring(0, 1);
+            if (!string.IsNullOrWhiteSpace(select) && int.TryParse(select, out int numberSelect) == true)
+            {
+                Console.Clear();
+                User user = Get(numberSelect);
+                Console.WriteLine("------------");
+                Console.WriteLine("Silmek istediğinize emin misiniz? (e) (h)");
+                string choose=Console.ReadLine().ToLower().Substring(0,1);
+                switch (choose)
+                {
+                    case "e":
+                        DeleteHelp(user);
+                        break;
+                    case "h":
+                        break;
+                    default:
+                        break;
+                }
 
+                
+            }
+            else
+            {
+                Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500);
+            }
+        }
+        public void DeleteHelp(User user)
+        {
+            foreach (var warehouse in warehouseRepository.GetAll())
+            {
+                if (warehouse.ManagerId == user.Id)
+                {
+                    warehouse.ManagerId = 1;
+                    warehouseRepository.Update(warehouse);
+
+                }
+            }
+            Console.Clear();
+            Console.WriteLine(repository.Delete(user.Id) ?
+                                "Silme Başarılı" :
+                                "Silme Başarısız");
+            Thread.Sleep(2000);
+
+
+        }
         
         public User Get(int id)
         {
@@ -130,7 +159,7 @@ namespace StockManagementProject.Controllers
 
         public void GetAll()
         {
-            
+
             Console.WriteLine("Kullanıcı Listesi");
             if (repository.GetAll().Count > 0)
             {
@@ -144,10 +173,10 @@ namespace StockManagementProject.Controllers
                                      DepoAd = warehouse.Name
                                  }).FirstOrDefault();
                     Console.WriteLine("-------------");
-                    Console.WriteLine("Id                  : " + user.Id);
-                    Console.WriteLine("Ad                  : " + user.Name);
-                    Console.WriteLine("Soyad               : " + user.Surname);
-                    Console.WriteLine("Soyad               : " + user.Email);
+                    Console.WriteLine("Id     : " + user.Id);
+                    Console.WriteLine("Ad     : " + user.Name);
+                    Console.WriteLine("Soyad  : " + user.Surname);
+                    Console.WriteLine("Email  : " + user.Email);
                     if(sorgu !=null )
                     {
                         Console.WriteLine("Bağlı Olduğu Depo Ad:" + sorgu.DepoAd);
@@ -181,22 +210,35 @@ namespace StockManagementProject.Controllers
                 Console.WriteLine("3. Kullanıcı Rol Ata");
                 Console.WriteLine("0. Üst Menü");
                 Console.Write("Seçiminiz: ");
-                int select = Convert.ToInt32(Console.ReadLine().Substring(0, 1));
 
-                switch (select)
+
+
+                string select = Console.ReadLine().Substring(0, 1);
+                if (!string.IsNullOrWhiteSpace(select) && int.TryParse(select, out int numberSelect) == true)
                 {
-                    case 1: Add(); break;
-                    case 2: GetAll(); break;
-                    case 3: Update(); break;
-                    case 0: return;
-                    default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500); break;
+                    switch (numberSelect)
+                    {
+                        case 1: Console.Clear(); Delete();  break;
+                        case 2: Console.Clear(); GetAll(); CheckForContinue(); break;
+                        case 3: Update(); break;
+                        case 0: return;
+                        default: Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500); break;
+                    }
                 }
-
-
+                else
+                {
+                    Console.Clear(); Console.WriteLine("Hatalı Giriş Yaptınız Lütfen Tekrar Giriniz"); Thread.Sleep(1500);
+                }
 
             }
         }
-
+        public void CheckForContinue()
+        {
+            Console.WriteLine("-------------------");
+            Console.WriteLine();
+            Console.WriteLine("Devam Etmek İçin Herhangi Bir Tuşa Basınız");
+            Console.ReadKey();
+        }
         public User SetValue()
         {
             User user = new User();
@@ -235,6 +277,13 @@ namespace StockManagementProject.Controllers
         public void Update()
         {
             Console.Clear();
+            GetAll();
+            Console.WriteLine();
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("---------------------------");
+            Console.WriteLine();
+            roleController.GetAll();
+            Console.WriteLine("------------------------");
             Console.Write("Rolünü Değiştirmek İstediğiniz Kullanıcının Id Giriniz:");
             int select = Convert.ToInt32(Console.ReadLine().Substring(0, 1));
             User user = Get(select);
@@ -246,7 +295,6 @@ namespace StockManagementProject.Controllers
             repository.Update(user);
 
         }
-
         public User Get()
         {
             throw new NotImplementedException();
