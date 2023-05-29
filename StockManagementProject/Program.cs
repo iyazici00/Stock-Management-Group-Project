@@ -106,6 +106,8 @@ namespace StockManagementProject
                         Console.WriteLine("3. Depo İşlemleri");
                         Console.WriteLine("4. Kategori İşlemleri");
                         Console.WriteLine("5. Ürün İşlemleri");
+                        Console.WriteLine("6. Kullanıcı Bilgilerini Görüntüle");
+                        Console.WriteLine("7. Kullanıcı Bilgilerini Güncelle");
                         rolec = 'a';
                     }
                     else if (userRole == "Sevkiyatçı")
@@ -142,6 +144,8 @@ namespace StockManagementProject
                             case "3a": warehouseController.Menu(); break;
                             case "4a": categoryController.Menu(); break;
                             case "5a": productController.Menu(); break;
+                            case "6a": userController.Getvoid(userId); break;
+                            case "7a": userController.Update(userId); break;
                             //Sevkiyat panel girdileri
                             case "1s": userController.Getvoid(userId); break;
                             case "2s": userController.Update(userId); break;
